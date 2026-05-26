@@ -223,6 +223,10 @@
       color: var(--red);
       font-weight: 900;
     }
+    .metric strong.fit-number {
+      font-size: clamp(24px, 3vw, 40px);
+      white-space: nowrap;
+    }
 
     .dark .metric strong, .hero .metric strong { color: #fff; }
     .metric span, .panel span {
@@ -608,7 +612,7 @@
             <div class="metric"><strong>3</strong><span>Extruder Lines</span></div>
             <div class="metric"><strong>1</strong><span>Non-woven Line</span></div>
             <div class="metric"><strong>3</strong><span>Press Lines</span></div>
-            <div class="metric"><strong>150~300t</strong><span>프레스 라인별 성형 능력</span></div>
+            <div class="metric"><strong class="fit-number">150~300t</strong><span>프레스 라인별 성형 능력</span></div>
           </div>
         </div>
         <div class="photo-strip">
