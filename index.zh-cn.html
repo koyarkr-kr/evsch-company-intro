@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EVSCH 公司简介</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --ink: #122033;
+      --red: #da291c;
+      --steel: #74859a;
+      --line: rgba(255,255,255,.22);
+      --soft: #f4f7fa;
+      --page: #e9eef4;
+      --card: #f3f6f9;
+      --mint: #63d7c6;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    body {
+      font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", Arial, sans-serif;
+      color: #fff;
+      background: var(--navy);
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(88px, 10vh, 118px) clamp(28px, 5vw, 72px) clamp(92px, 10vh, 118px);
+      display: grid;
+      align-content: start;
+      opacity: 0;
+      transform: none;
+      pointer-events: none;
+      transition: none;
+      background:
+        linear-gradient(180deg, rgba(233,238,244,.98), rgba(221,229,238,.98)),
+        radial-gradient(circle at 86% 12%, rgba(218,41,28,.09), transparent 34%);
+      color: var(--ink);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .slide.dark {
+      color: #fff;
+      background:
+        linear-gradient(125deg, rgba(13,27,42,.96), rgba(13,27,42,.88) 44%, rgba(218,41,28,.74)),
+        url("assets/image16.jpeg") center / cover;
+    }
+
+    .slide.hero {
+      align-content: center;
+      background:
+        linear-gradient(120deg, rgba(13,27,42,.94), rgba(218,41,28,.76)),
+        url("assets/image8.png") center / cover;
+    }
+
+    .slide.hero h1 {
+      margin-top: 20px;
+      font-size: clamp(40px, 5.8vw, 74px);
+    }
+
+    .slide.hero .lead {
+      margin-top: 18px;
+      max-width: 820px;
+      font-size: clamp(17px, 1.9vw, 23px);
+      line-height: 1.45;
+    }
+
+    .slide.hero .name-meaning {
+      margin-top: 14px;
+    }
+
+    .slide.hero .grid {
+      margin-top: 22px;
+    }
+
+    .slide.hero .metric {
+      min-height: 104px;
+      padding: 18px 20px;
+    }
+
+
+    .topbar {
+      position: absolute;
+      top: 28px;
+      left: 34px;
+      right: 34px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.9);
+    }
+
+    .slide:not(.dark):not(.hero) .topbar { color: var(--ink); }
+    .brand-mark { display: flex; align-items: center; gap: 10px; }
+    .brand-mark::before {
+      content: "";
+      width: 34px;
+      height: 5px;
+      background: var(--red);
+      display: inline-block;
+    }
+
+    .count { font-variant-numeric: tabular-nums; }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 18px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      color: inherit;
+      opacity: .82;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      margin-top: 28px;
+      max-width: 900px;
+      font-size: clamp(44px, 6.6vw, 88px);
+      line-height: .98;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .hero h1, .dark h2 {
+      color: #fff;
+      text-shadow: 0 18px 42px rgba(0,0,0,.24);
+    }
+
+    h2 {
+      max-width: 980px;
+      font-size: clamp(32px, 4.6vw, 58px);
+      line-height: 1.06;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .lead {
+      margin-top: 24px;
+      max-width: 760px;
+      color: rgba(255,255,255,.82);
+      font-size: clamp(18px, 2.3vw, 27px);
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    .slide:not(.dark):not(.hero) .lead { color: #4d5b6d; }
+    .accent { color: var(--red); }
+    .mint { color: var(--mint); }
+
+    .name-meaning {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-width: 820px;
+      color: rgba(255,255,255,.82);
+      font-size: clamp(14px, 1.4vw, 18px);
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+    .name-meaning span {
+      padding: 9px 13px;
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+    }
+    .name-meaning b {
+      color: #95d82d;
+      font-size: 1.12em;
+    }
+
+    .grid {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric, .panel {
+      border: 1px solid rgba(13,27,42,.11);
+      background: rgba(243,246,249,.92);
+      padding: 24px;
+      min-height: 132px;
+      box-shadow: 0 14px 38px rgba(14,30,46,.09);
+    }
+
+    .dark .metric, .dark .panel, .hero .metric {
+      border-color: var(--line);
+      background: rgba(255,255,255,.08);
+      box-shadow: none;
+      backdrop-filter: blur(12px);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 1;
+      color: var(--red);
+      font-weight: 900;
+    }
+    .metric strong.fit-number {
+      font-size: clamp(24px, 3vw, 40px);
+      white-space: nowrap;
+    }
+
+    .dark .metric strong, .hero .metric strong { color: #fff; }
+    .metric span, .panel span {
+      display: block;
+      margin-top: 12px;
+      color: #607084;
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .dark .metric span, .hero .metric span, .dark .panel span { color: rgba(255,255,255,.72); }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+      gap: clamp(28px, 5vw, 70px);
+      align-items: center;
+    }
+
+    .photo-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .photo-strip img, .large-photo, .certs img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border: 1px solid rgba(13,27,42,.12);
+      background: #f7f9fb;
+    }
+
+    .photo-strip img { aspect-ratio: 4 / 3; }
+    .large-photo { aspect-ratio: 5 / 3; }
+
+    .list {
+      margin-top: 32px;
+      display: grid;
+      gap: 12px;
+      font-size: clamp(17px, 2vw, 24px);
+      line-height: 1.45;
+      color: #2c3a4c;
+      font-weight: 700;
+    }
+
+    .dark .list { color: rgba(255,255,255,.9); }
+    .list div {
+      display: grid;
+      grid-template-columns: 12px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    .list div::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: .62em;
+      background: var(--red);
+    }
+
+    .timeline {
+      margin-top: 38px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 2px solid rgba(13,27,42,.16);
+    }
+    .timeline article {
+      padding: 24px 22px 0;
+      position: relative;
+      min-height: 170px;
+    }
+    .timeline article::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 22px;
+      width: 12px;
+      height: 12px;
+      background: var(--red);
+    }
+    .timeline strong {
+      display: block;
+      font-size: 28px;
+      color: var(--red);
+      margin-bottom: 10px;
+      font-weight: 900;
+    }
+    .timeline span {
+      color: #4d5b6d;
+      line-height: 1.48;
+      font-weight: 650;
+    }
+
+    .logos {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .logo-tile {
+      min-height: 154px;
+      display: grid;
+      place-items: center;
+      background: rgba(243,246,249,.96);
+      border: 1px solid rgba(13,27,42,.1);
+      padding: 12px;
+    }
+    .logo-tile img {
+      max-width: 100%;
+      max-height: 116px;
+      object-fit: contain;
+    }
+    .logo-tile img.vehicle-img {
+      width: 100%;
+      max-height: none;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+    }
+    .logo-tile b {
+      margin-top: 6px;
+      display: block;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .vehicle-slide h2 {
+      font-size: clamp(30px, 3.6vw, 46px);
+      max-width: 820px;
+    }
+    .vehicle-slide .lead {
+      margin-top: 14px;
+      max-width: 880px;
+      font-size: clamp(16px, 1.45vw, 20px);
+      line-height: 1.38;
+    }
+    .vehicle-slide .logos {
+      margin-top: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+    .vehicle-slide .logo-tile {
+      min-height: 0;
+      height: clamp(138px, 19.5vh, 176px);
+      padding: 8px 10px 7px;
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+    .vehicle-slide .logo-tile img.vehicle-img {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      aspect-ratio: auto;
+      object-fit: contain;
+    }
+    .vehicle-slide .logo-tile b {
+      margin-top: 3px;
+      font-size: 13px;
+    }
+
+    .process {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .process .panel { min-height: 250px; }
+    .process b {
+      display: block;
+      font-size: 25px;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .process img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      margin-top: 16px;
+    }
+
+    .certs {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .certs figure {
+      margin: 0;
+      background: rgba(243,246,249,.96);
+      border: 1px solid rgba(13,27,42,.1);
+      min-height: 0;
+      height: 330px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+    .certs img { border: 0; object-fit: contain; padding: 14px; min-height: 0; }
+    .certs figcaption {
+      padding: 16px;
+      color: var(--ink);
+      font-weight: 850;
+      border-top: 1px solid rgba(13,27,42,.1);
+      background: #eef3f7;
+    }
+
+    .controls {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.42);
+      color: #fff;
+      background: rgba(255,255,255,.1);
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .dots { display: flex; gap: 9px; align-items: center; }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.32);
+      cursor: pointer;
+      padding: 0;
+    }
+    .dot.active { width: 34px; background: #fff; }
+    .hint {
+      position: absolute;
+      right: 34px;
+      bottom: 34px;
+      z-index: 9;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .slide:not(.dark):not(.hero) ~ .controls .nav,
+    .light-ui .nav {
+      border-color: rgba(13,27,42,.18);
+      color: var(--ink);
+      background: rgba(13,27,42,.04);
+    }
+    .light-ui .dot { background: rgba(13,27,42,.22); }
+    .light-ui .dot.active { background: var(--red); }
+    .light-ui .hint { color: #607084; }
+
+    @media (max-width: 520px) {
+      html, body { overflow: auto; }
+      body { background: var(--page); }
+      .deck { width: 100%; height: auto; overflow: hidden; }
+      .slide {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        min-height: 100vh;
+        opacity: 1;
+        transform: none;
+        transition: none;
+        pointer-events: auto;
+      }
+      .slide:not(.active) { display: none; }
+      .topbar { top: 18px; left: 20px; right: 20px; }
+      .split, .grid, .timeline, .logos, .process, .certs {
+        grid-template-columns: 1fr;
+      }
+      .slide.hero .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .slide.hero .metric {
+        min-height: 88px;
+        padding: 14px;
+      }
+      .logos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .logo-tile {
+        min-height: 124px;
+        padding: 10px;
+      }
+      .photo-strip { grid-template-columns: 1fr 1fr; }
+      .controls { bottom: 18px; }
+      .hint { display: none; }
+      .certs figure { min-height: 320px; }
+    }
+
+    @media print {
+      html, body { height: auto; overflow: visible; background: var(--page); }
+      .deck { height: auto; overflow: visible; }
+      .slide {
+        position: relative;
+        page-break-after: always;
+        opacity: 1;
+        transform: none;
+        min-height: 100vh;
+      }
+      .controls, .hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" id="deck">
+    <section class="slide hero active">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">公司简介 · 汽车内饰材料</div>
+        <h1>环保汽车内饰材料的<br />专业制造伙伴</h1>
+        <p class="lead">EVSCH Co., Ltd. 是一家专业生产行李厢内饰材料及无纺布基汽车内饰零部件的企业。公司凭借客户响应能力、基于认证的质量体系以及可回收材料竞争力，提供稳定的制造服务。</p>
+        <div class="name-meaning" aria-label="EVSCH 缩写含义">
+          <span><b>E</b>lastic</span>
+          <span><b>V</b>igorous</span>
+          <span><b>S</b>peedy</span>
+          <span><b>Ch</b>emical & Materials Company</span>
+        </div>
+        <div class="grid">
+          <div class="metric"><strong>2011</strong><span>公司成立</span></div>
+          <div class="metric"><strong>26人</strong><span>现有员工</span></div>
+          <div class="metric"><strong>600万㎡</strong><span>年挤出生产能力</span></div>
+          <div class="metric"><strong>GRS</strong><span>全球回收标准认证</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div class="split">
+        <div>
+          <div class="eyebrow">选择 EVSCH 的理由</div>
+          <h2>契合整车供应链的<span class="accent">质量·交期·成本</span>执行力</h2>
+          <p class="lead">EVSCH 的竞争力源于已建立的生产基础和客户响应体系。公司以材料、挤出、无纺布、压制工艺为中心，具备汽车内饰零部件市场所需的制造能力。</p>
+          <div class="list">
+            <div>基于现代·起亚主要车型供货履历的业务可信度</div>
+            <div>通过 IATF 16949、ISO 14001、GRS 验证的质量·环境管理体系</div>
+            <div>采用无胶粘剂、轻量、吸音、可回收材料形成产品差异化</div>
+          </div>
+        </div>
+        <img class="large-photo" src="assets/image2.jpeg" alt="EVSCH 行李厢内饰材料样品" />
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">公司概况</div>
+        <h2>在忠北镇川生产基地<br />专业生产汽车内饰材料</h2>
+        <div class="grid">
+          <div class="metric"><strong>Cho Seung Hwe</strong><span>代表理事</span></div>
+          <div class="metric"><strong>镇川</strong><span>忠北镇川郡柏谷面柏谷路 511-28</span></div>
+          <div class="metric"><strong>7条</strong><span>挤出3 压制3 无纺布线1</span></div>
+          <div class="metric"><strong>4项</strong><span>ISO·IATF·GRS·专利</span></div>
+        </div>
+        <div class="timeline">
+          <article><strong>2011</strong><span>EVSCH Co., Ltd. 成立<br />在忠南天安开始业务</span></article>
+          <article><strong>2014</strong><span>镇川工厂竣工并迁入<br />增设分纤·挤出线</span></article>
+          <article><strong>年 600万㎡ 挤出生产能力</strong><span></span></article>
+          <article><strong>2024</strong><span>取得 GRS 认证及汽车行李厢内饰材料专利</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide dark">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div class="split">
+        <div>
+          <div class="eyebrow">制造体系</div>
+          <h2>将挤出·无纺布·压制工艺<br />连接为<span class="mint">一体化生产体系</span></h2>
+          <p class="lead">3条挤出线各具备 2,000,000㎡/yr 的生产能力，无纺布与压制工艺强化了内饰材料成型及后加工的对应能力。</p>
+          <div class="grid">
+            <div class="metric"><strong>3</strong><span>挤出线</span></div>
+            <div class="metric"><strong>1</strong><span>无纺布线</span></div>
+            <div class="metric"><strong>3</strong><span>压制线</span></div>
+            <div class="metric"><strong class="fit-number">150~300t</strong><span>各压制线成型能力</span></div>
+          </div>
+        </div>
+        <div class="photo-strip">
+          <img src="assets/image16.jpeg" alt="原料投入设备" />
+          <img src="assets/image18.jpeg" alt="挤出复合设备" />
+          <img src="assets/image22.jpeg" alt="无纺布工艺设备" />
+          <img src="assets/image27.png" alt="压制工艺设备" />
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">产品优势</div>
+        <h2>适用于行李厢内饰材料的<br />轻量·吸音·环保材料</h2>
+        <div class="process">
+          <div class="panel"><b>材料结构</b><span>将 PP 板与无纺布复合，应用于行李厢侧饰板、隔板、盖板、覆盖件等区域。</span><img src="assets/image3.png" alt="行李厢内饰材料应用部位" /></div>
+          <div class="panel"><b>工艺优势</b><span>采用利用纤维特性的热熔接合方式，成型 Process 简便高效。</span><img src="assets/image4.png" alt="材料截面图像" /></div>
+          <div class="panel"><b>产品价值</b><span>在确保吸音、耐热、强度功能的同时，通过不使用胶粘剂实现无异味产品。</span><img src="assets/image5.jpeg" alt="内饰材料成品" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide vehicle-slide">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">客户覆盖</div>
+        <h2>通过现代·起亚主要车型<br />验证的供货基础</h2>
+        <p class="lead">已建立可对应 GV80、G80、Grandeur、Sonata、PV5、K4(墨西哥) 等多种乘用·商用平台的产品组合。</p>
+        <div class="logos">
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_gv80.jpg" alt="GV80" /><b>GV80</b></div>
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_g80.jpg" alt="G80" /><b>G80</b></div>
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_grandeur.jpg" alt="Grandeur" /><b>Grandeur</b></div>
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_sonata.jpg" alt="Sonata" /><b>Sonata</b></div>
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_pv5.jpg" alt="PV5" /><b>PV5</b></div>
+          <div class="logo-tile"><img class="vehicle-img" src="assets/vehicles/vehicle_k4_cl4.jpg" alt="K4 墨西哥" /><b>K4(墨西哥)</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">质量与认证</div>
+        <h2>以认证与专利体现的<br />可持续制造竞争力</h2>
+        <div class="certs">
+          <figure><img src="assets/image38.png" alt="GRS 认证书" /><figcaption>GRS 认证<br />Global Recycled Standard</figcaption></figure>
+          <figure><img src="assets/image39.png" alt="专利证书" /><figcaption>专利第10-2682641号<br />电动汽车用行李厢内饰材料</figcaption></figure>
+          <figure><img src="assets/image40.jpg" alt="IATF 16949 认证书" /><figcaption>IATF 16949<br />质量管理体系</figcaption></figure>
+          <figure><img src="assets/image41.jpg" alt="ISO 14001 认证书" /><figcaption>ISO 14001<br />环境管理体系</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide dark">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">核心优势</div>
+        <h2>EVSCH 积累的<br />汽车内饰材料<span class="mint">制造竞争力</span></h2>
+        <p class="lead">EVSCH 是一家拥有生产设备、客户供货履历、环保认证和专利的制造基础型企业。公司以生产能力、车型对应经验、可回收材料应用能力为基础，持续强化汽车内饰零部件领域的专业性。</p>
+        <div class="grid">
+          <div class="metric"><strong>Production Base</strong><span>挤出·无纺布·压制生产基础</span></div>
+          <div class="metric"><strong>EV-Ready</strong><span>基于电动汽车用行李厢内饰材料专利的扩展性</span></div>
+          <div class="metric"><strong>Eco-cert</strong><span>基于 GRS 认证的可回收材料对应能力</span></div>
+          <div class="metric"><strong>OEM Network</strong><span>整车零部件供应链对应经验</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide hero">
+      <div class="topbar"><div class="brand-mark">EVSCH</div><div class="count"></div></div>
+      <div>
+        <div class="eyebrow">谢谢</div>
+        <h1>EVSCH<br />Appreciates Your Partnership</h1>
+        <p class="lead">汽车内饰零部件专业企业 EVSCH Co., Ltd.</p>
+      </div>
+    </section>
+
+    <div class="controls" aria-label="幻灯片切换">
+      <button class="nav" type="button" id="prev" aria-label="上一页">‹</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav" type="button" id="next" aria-label="下一页">›</button>
+    </div>
+    <div class="hint">使用 ← → 或点击切换</div>
+  </main>
+
+  <script>
+    const deck = document.getElementById("deck");
+    const slides = [...document.querySelectorAll(".slide")];
+    const dots = document.getElementById("dots");
+    let index = 0;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement("button");
+      dot.className = "dot";
+      dot.type = "button";
+      dot.setAttribute("aria-label", `第 ${i + 1} 页幻灯片`);
+      dot.addEventListener("click", () => show(i));
+      dots.appendChild(dot);
+    });
+
+    function show(nextIndex, force = false) {
+      const normalized = (nextIndex + slides.length) % slides.length;
+      if (!force && normalized === index && slides[index].classList.contains("active")) return;
+      index = normalized;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+        slide.querySelector(".count").textContent = `${i + 1} / ${slides.length}`;
+      });
+      [...dots.children].forEach((dot, i) => dot.classList.toggle("active", i === index));
+      deck.classList.toggle("light-ui", !slides[index].classList.contains("dark") && !slides[index].classList.contains("hero"));
+    }
+
+    document.getElementById("prev").addEventListener("click", () => show(index - 1));
+    document.getElementById("next").addEventListener("click", () => show(index + 1));
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") show(index + 1);
+      if (event.key === "ArrowLeft" || event.key === "PageUp") show(index - 1);
+    });
+    show(0, true);
+  </script>
+</body>
+</html>
